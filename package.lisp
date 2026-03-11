@@ -1,3 +1,6 @@
+;;;; Copyright (c) 2024-2026 Parkian Company LLC. All rights reserved.
+;;;; SPDX-License-Identifier: BSD-3-Clause
+
 ;;;; package.lisp - Package definitions for cl-bls12-381
 ;;;;
 ;;;; Exports all public symbols for BLS12-381 operations.

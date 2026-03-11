@@ -5,7 +5,7 @@
 
 (asdf:defsystem #:cl-bls12-381
   :description "BLS12-381 pairing-friendly elliptic curve with BLS signatures"
-  :author "CLPIC Contributors"
+  :author "Parkian Company LLC"
   :license "MIT"
   :version "0.1.0"
   :serial t

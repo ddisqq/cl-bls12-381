@@ -1,3 +1,6 @@
+;;;; Copyright (c) 2024-2026 Parkian Company LLC. All rights reserved.
+;;;; SPDX-License-Identifier: BSD-3-Clause
+
 ;;;; field.lisp - Field Arithmetic for BLS12-381
 ;;;;
 ;;;; Implements arithmetic in Fp, Fp2, and Fp12 tower extensions.

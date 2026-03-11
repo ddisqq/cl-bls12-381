@@ -1,3 +1,6 @@
+;;;; Copyright (c) 2024-2026 Parkian Company LLC. All rights reserved.
+;;;; SPDX-License-Identifier: BSD-3-Clause
+
 ;;;; curve.lisp - G1 and G2 Curve Operations for BLS12-381
 ;;;;
 ;;;; Implements elliptic curve arithmetic for both G1 (over Fp) and G2 (over Fp2).

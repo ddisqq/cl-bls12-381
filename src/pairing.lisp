@@ -1,3 +1,6 @@
+;;;; Copyright (c) 2024-2026 Parkian Company LLC. All rights reserved.
+;;;; SPDX-License-Identifier: BSD-3-Clause
+
 ;;;; pairing.lisp - Bilinear Pairing for BLS12-381
 ;;;;
 ;;;; Implements the optimal ate pairing e: G1 x G2 -> GT.

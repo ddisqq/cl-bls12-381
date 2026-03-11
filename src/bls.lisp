@@ -1,3 +1,6 @@
+;;;; Copyright (c) 2024-2026 Parkian Company LLC. All rights reserved.
+;;;; SPDX-License-Identifier: BSD-3-Clause
+
 ;;;; bls.lisp - BLS Signature Scheme
 ;;;;
 ;;;; Implements BLS signatures with aggregation, threshold, and Proof of Possession.
