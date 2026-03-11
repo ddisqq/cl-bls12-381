@@ -98,7 +98,7 @@
 ;;; SHA-256 Implementation
 ;;; ============================================================================
 
-(defconstant +sha256-k+
+(defvar *sha256-k*
   #(#x428a2f98 #x71374491 #xb5c0fbcf #xe9b5dba5 #x3956c25b #x59f111f1 #x923f82a4 #xab1c5ed5
     #xd807aa98 #x12835b01 #x243185be #x550c7dc3 #x72be5d74 #x80deb1fe #x9bdc06a7 #xc19bf174
     #xe49b69c1 #xefbe4786 #x0fc19dc6 #x240ca1cc #x2de92c6f #x4a7484aa #x5cb0a9dc #x76f988da
@@ -109,12 +109,12 @@
     #x748f82ee #x78a5636f #x84c87814 #x8cc70208 #x90befffa #xa4506ceb #xbef9a3f7 #xc67178f2)
   "SHA-256 round constants.")
 
-(defconstant +sha256-h0+
+(defvar *sha256-h0*
   #(#x6a09e667 #xbb67ae85 #x3c6ef372 #xa54ff53a #x510e527f #x9b05688c #x1f83d9ab #x5be0cd19)
   "SHA-256 initial hash values.")
 
 (declaim (inline sha256-rotr sha256-ch sha256-maj sha256-sigma0 sha256-sigma1
-                 sha256-Sigma0 sha256-Sigma1))
+                 sha256-big-sigma0 sha256-big-sigma1))
 
 (defun sha256-rotr (x n)
   (declare (type (unsigned-byte 32) x) (type (integer 0 31) n))
@@ -128,11 +128,11 @@
   (declare (type (unsigned-byte 32) x y z))
   (logxor (logand x y) (logand x z) (logand y z)))
 
-(defun sha256-Sigma0 (x)
+(defun sha256-big-sigma0 (x)
   (declare (type (unsigned-byte 32) x))
   (logxor (sha256-rotr x 2) (sha256-rotr x 13) (sha256-rotr x 22)))
 
-(defun sha256-Sigma1 (x)
+(defun sha256-big-sigma1 (x)
   (declare (type (unsigned-byte 32) x))
   (logxor (sha256-rotr x 6) (sha256-rotr x 11) (sha256-rotr x 25)))
 
@@ -183,12 +183,18 @@
       ;; 64 rounds
       (dotimes (i 64)
         (let* ((t1 (logand #xFFFFFFFF
-                           (+ hh (sha256-Sigma1 e) (sha256-ch e f g)
-                              (aref +sha256-k+ i) (aref w i))))
+                           (+ hh (sha256-big-sigma1 e) (sha256-ch e f g)
+                              (aref *sha256-k* i) (aref w i))))
                (t2 (logand #xFFFFFFFF
-                           (+ (sha256-Sigma0 a) (sha256-maj a b c)))))
-          (setf hh g g f f e (logand #xFFFFFFFF (+ d t1))
-                d c c b b a a (logand #xFFFFFFFF (+ t1 t2)))))
+                           (+ (sha256-big-sigma0 a) (sha256-maj a b c)))))
+          (setf hh g
+                g f
+                f e
+                e (logand #xFFFFFFFF (+ d t1))
+                d c
+                c b
+                b a
+                a (logand #xFFFFFFFF (+ t1 t2)))))
       ;; Add to hash
       (setf (aref h 0) (logand #xFFFFFFFF (+ (aref h 0) a))
             (aref h 1) (logand #xFFFFFFFF (+ (aref h 1) b))
@@ -211,7 +217,7 @@
                 ((vector (unsigned-byte 8)) message)
                 (string (map '(vector (unsigned-byte 8)) #'char-code message))))
          (padded (sha256-pad-message msg))
-         (h (copy-seq +sha256-h0+)))
+         (h (copy-seq *sha256-h0*)))
     ;; Process each 64-byte block
     (loop for i from 0 below (length padded) by 64
           do (sha256-process-block (subseq padded i (+ i 64)) h))
